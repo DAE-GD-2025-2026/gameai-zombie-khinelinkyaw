@@ -27,17 +27,11 @@ bool UBTDecorator_IsHouseNearby::CalculateRawConditionValue(UBehaviorTreeCompone
 		return false;
 	}
 	 
-	// Retrieve the value from the blackboard
-	auto CurrentValue = BlackboardComp->GetValueAsObject(SelectedBlackboardKey.SelectedKeyName);
-	
-	if (AHouse* House { Cast<AHouse>(CurrentValue) })
+	if (AHouse* House = Cast<AHouse>(BlackboardComp->GetValueAsObject(SelectedBlackboardKey.SelectedKeyName)))
 	{
 		FVector OwnerLocation { OwnerComp.GetOwner()->GetActorLocation() };
 		double HouseDistance{ House->GetActorLocation().Size() - OwnerLocation.Size() };
 		return HouseDistance < Range;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
