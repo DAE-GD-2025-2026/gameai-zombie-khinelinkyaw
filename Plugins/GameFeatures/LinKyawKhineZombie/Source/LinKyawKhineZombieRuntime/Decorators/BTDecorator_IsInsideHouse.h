@@ -10,7 +10,10 @@ class LINKYAWKHINEZOMBIERUNTIME_API UBTDecorator_IsInsideHouse : public UBTDecor
 	GENERATED_BODY()
 private:
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
-	FBlackboardKeySelector SelectedBlackboardKey;
+	FBlackboardKeySelector HouseKey;
+	
+	UPROPERTY(EditAnywhere, Category = "Blackboard")
+	FBlackboardKeySelector SurvivorKey;
 	
 public:
 	UBTDecorator_IsInsideHouse();

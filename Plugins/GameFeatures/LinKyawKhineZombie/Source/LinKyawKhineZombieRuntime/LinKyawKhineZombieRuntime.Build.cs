@@ -7,6 +7,7 @@ public class LinKyawKhineZombieRuntime : ModuleRules
 	public LinKyawKhineZombieRuntime(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+		OptimizeCode = CodeOptimization.Never;
 		
 		PublicIncludePaths.AddRange(
 			new string[] {

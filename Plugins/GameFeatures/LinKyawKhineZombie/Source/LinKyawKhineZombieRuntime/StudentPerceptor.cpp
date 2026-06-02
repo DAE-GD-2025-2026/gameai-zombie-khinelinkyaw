@@ -60,15 +60,8 @@ void UStudentPerceptor::UpdateClosestHouse() const
 		APawn* OwningPawn { Cast<APawn>(GetOwner())};
 		AAIController* AIController  = Cast<AAIController>(OwningPawn->GetController());
 		auto BBComp {AIController->GetBlackboardComponent()};
-		
-		if (IsInHouse(HousePtr))
-		{
-			BBComp->SetValueAsObject(TEXT("ClosestHouse"), nullptr);
-		}
-		else
-		{
-			BBComp->SetValueAsObject(TEXT("ClosestHouse"), HousePtr);
-		}
+
+		BBComp->SetValueAsObject(TEXT("ClosestHouse"), HousePtr);
 	}
 }
 
