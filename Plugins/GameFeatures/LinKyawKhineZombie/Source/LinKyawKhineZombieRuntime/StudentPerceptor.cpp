@@ -15,18 +15,6 @@
 
 #include <BehaviorTree/BlackboardComponent.h>
 
-bool UStudentPerceptor::IsInHouse(TObjectPtr<AHouse> const& House) const
-{
-	FVector HouseOrigin{}, HouseBoxExtend{}, SurvivorOrigin{}, SurvivorBoxExtend{};
-	House->GetActorBounds(false, HouseOrigin, HouseBoxExtend);
-	GetOwner()->GetActorBounds(false, SurvivorOrigin, SurvivorBoxExtend);
-	
-	FBox const HouseBox { FBox::BuildAABB(HouseOrigin, HouseBoxExtend) };
-	FBox const OwnerBox { FBox::BuildAABB(SurvivorOrigin, SurvivorBoxExtend) };
-	
-	return HouseBox.Intersect(OwnerBox);
-}
-
 void UStudentPerceptor::UpdateSurvivorTargetLocation() const
 {
 	if (!NearbyHouses.IsEmpty())
@@ -36,19 +24,8 @@ void UStudentPerceptor::UpdateSurvivorTargetLocation() const
 		AAIController* AIController  = Cast<AAIController>(OwningPawn->GetController());
 		auto BBComp {AIController->GetBlackboardComponent()};
 		
-		if (IsInHouse(HousePtr))
-		{
-			if (Items.IsEmpty()) return;
-			
-			auto ItemPtr { GetClosestItem<ABaseItem>(Items) };
-			BBComp->SetValueAsVector(TEXT("TargetLocation"), ItemPtr->GetActorLocation());
-			BBComp->SetValueAsObject(TEXT("ActiveTarget"), ItemPtr);
-		}
-		else
-		{
-			BBComp->SetValueAsVector(TEXT("TargetLocation"), HousePtr->GetActorLocation());
-			BBComp->SetValueAsObject(TEXT("ActiveTarget"), HousePtr);
-		}
+		BBComp->SetValueAsVector(TEXT("TargetLocation"), HousePtr->GetActorLocation());
+		BBComp->SetValueAsObject(TEXT("ActiveTarget"), HousePtr);
 	}
 }
 

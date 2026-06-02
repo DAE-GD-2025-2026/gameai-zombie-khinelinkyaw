@@ -30,16 +30,11 @@ private:
 	
 	UPROPERTY() TObjectPtr<AHouse> ActiveHouse;
 	
-	bool IsInHouse(TObjectPtr<AHouse> const& House) const;
-	
 	UFUNCTION()
 	void UpdateSurvivorTargetLocation() const;
 	
 	UFUNCTION()
 	void UpdateClosestHouse() const;
-	
-	template<typename T>
-	TObjectPtr<T> GetClosestItem(TSet<TObjectPtr<T>>const& Actors) const;
 
 	UFUNCTION()
 	bool IsHealthNeeded() const;
@@ -53,6 +48,11 @@ private:
 public:
 	// Sets default values for this component's properties
 	UStudentPerceptor();
+	
+	TSet<TObjectPtr<ABaseItem>>& GetPerceivedItems() { return Items; }
+	
+	template<typename T>
+	TObjectPtr<T> GetClosestItem(TSet<TObjectPtr<T>>const& Actors) const;
 	
 	virtual void BeginPlay() override;
 
