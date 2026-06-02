@@ -12,7 +12,7 @@ FString UBTDecorator_IsHouseNearby::GetStaticDescription() const
 
 UBTDecorator_IsHouseNearby::UBTDecorator_IsHouseNearby()
 {
-	NodeName = "IsHouseNearby";
+	NodeName = "Is House Nearby";
 	Range = 100.f;
 	
 	SelectedBlackboardKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTDecorator_IsHouseNearby, SelectedBlackboardKey), AHouse::StaticClass());

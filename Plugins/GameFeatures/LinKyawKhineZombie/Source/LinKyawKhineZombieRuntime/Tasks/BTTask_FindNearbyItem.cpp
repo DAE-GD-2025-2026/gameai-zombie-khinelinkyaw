@@ -1,4 +1,4 @@
-﻿#include "BTTask_CollectNearbyItem.h"
+﻿#include "BTTask_FindNearbyItem.h"
 
 #include <../PluginUtils/ZombiePluginUtils.h>
 #include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
@@ -11,14 +11,14 @@
 
 
 
-UBTTask_CollectNearbyItem::UBTTask_CollectNearbyItem()
+UBTTask_FindNearbyItem::UBTTask_FindNearbyItem()
 {
-	NodeName = "Collect Nearby Item";
-	HouseKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_CollectNearbyItem, HouseKey), AHouse::StaticClass());
-	BlackboardKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_CollectNearbyItem, BlackboardKey), ABaseItem::StaticClass());
+	NodeName = "Find Nearby Item";
+	HouseKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_FindNearbyItem, HouseKey), AHouse::StaticClass());
+	BlackboardKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_FindNearbyItem, BlackboardKey), ABaseItem::StaticClass());
 }
 
-EBTNodeResult::Type UBTTask_CollectNearbyItem::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_FindNearbyItem::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIController const* AIController = OwnerComp.GetAIOwner();
 	if (!AIController || !AIController->GetPawn())

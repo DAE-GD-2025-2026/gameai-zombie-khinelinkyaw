@@ -9,7 +9,7 @@
 
 UBTDecorator_IsInsideHouse::UBTDecorator_IsInsideHouse()
 {
-	NodeName = "IsInsideHouse";
+	NodeName = "Is Survivor Inside House";
 	HouseKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTDecorator_IsInsideHouse, HouseKey), AHouse::StaticClass());
 	SurvivorKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTDecorator_IsInsideHouse, SurvivorKey), AActor::StaticClass());
 }
