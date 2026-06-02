@@ -26,7 +26,11 @@ public class LinKyawKhineZombieRuntime : ModuleRules
 			new string[]
 			{
 				"Core",
-				"AIModule"
+				"AIModule",
+				"NavigationSystem",
+				"InputCore",
+				"GameplayTasks",
+				"GameAI_Zombie"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

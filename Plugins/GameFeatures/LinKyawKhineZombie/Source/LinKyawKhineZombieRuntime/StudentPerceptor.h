@@ -10,11 +10,46 @@
 #include "Perception/AISense_Damage.h"
 #include "StudentPerceptor.generated.h"
 
+class AHouse;
+class ABaseItem;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class LINKYAWKHINEZOMBIERUNTIME_API UStudentPerceptor : public UActorComponent
 {
 	GENERATED_BODY()
 
+private:
+	UPROPERTY() TSet<TObjectPtr<ABaseItem>> Items;
+	
+	UPROPERTY() TSet<TObjectPtr<ABaseItem>> FoodItems;
+	UPROPERTY() TSet<TObjectPtr<ABaseItem>> MedkitItems;
+	UPROPERTY() TSet<TObjectPtr<ABaseItem>> Shotguns;
+	UPROPERTY() TSet<TObjectPtr<ABaseItem>> Pistols;
+	UPROPERTY() TSet<TObjectPtr<ABaseItem>> GarbageItems;
+	UPROPERTY() TSet<TObjectPtr<AHouse>> NearbyHouses;
+	
+	UPROPERTY() TObjectPtr<AHouse> ActiveHouse;
+	
+	bool IsInHouse(TObjectPtr<AHouse> const& House) const;
+	
+	UFUNCTION()
+	void UpdateSurvivorTargetLocation() const;
+	
+	UFUNCTION()
+	void UpdateClosestHouse() const;
+	
+	template<typename T>
+	TObjectPtr<T> GetClosestItem(TSet<TObjectPtr<T>>const& Actors) const;
+
+	UFUNCTION()
+	bool IsHealthNeeded() const;
+	
+	UFUNCTION()
+	bool IsFoodNeeded() const;
+	
+	UFUNCTION()
+	bool IsAGunEquipped() const;
+	
 public:
 	// Sets default values for this component's properties
 	UStudentPerceptor();
@@ -24,3 +59,23 @@ public:
 	UFUNCTION()
 	virtual void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 };
+
+template <typename T>
+TObjectPtr<T> UStudentPerceptor::GetClosestItem(TSet<TObjectPtr<T>> const& Actors) const
+{
+	FVector SurvivorLocation { GetOwner()->GetActorLocation() };
+	
+	auto const MinElementPtr { Algo::MinElementBy(Actors, [SurvivorLocation](TObjectPtr<T> const& Actor)
+	{
+		FVector const ActorLocation{ Actor->GetActorLocation() - SurvivorLocation };
+		
+		return ActorLocation.Size();
+	})};
+	
+	if (MinElementPtr)
+	{
+		return MinElementPtr->Get();
+	}
+	
+	return nullptr;
+}
