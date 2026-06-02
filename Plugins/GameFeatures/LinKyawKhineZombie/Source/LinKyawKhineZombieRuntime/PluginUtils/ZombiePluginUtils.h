@@ -6,4 +6,5 @@
 namespace PluginUtils
 {
 	TArray<TObjectPtr<ABaseItem>> GetAllItemsInHouse(AHouse const* House, TSet<TObjectPtr<ABaseItem>> Items);
+	int GetFirstEmptyInventoryIndex(UInventoryComponent const* InvComp);
 }

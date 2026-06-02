@@ -9,8 +9,6 @@
 #include <AIController.h>
 #include <BehaviorTree/BlackboardComponent.h>
 
-
-
 UBTTask_FindNearbyItem::UBTTask_FindNearbyItem()
 {
 	NodeName = "Find Nearby Item";
@@ -26,7 +24,7 @@ EBTNodeResult::Type UBTTask_FindNearbyItem::ExecuteTask(UBehaviorTreeComponent& 
 		return EBTNodeResult::Failed;
 	}
 	
-	UBlackboardComponent const* BlackboardComp = OwnerComp.GetBlackboardComponent();
+	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	
 	if (!BlackboardComp)
 	{
@@ -46,7 +44,7 @@ EBTNodeResult::Type UBTTask_FindNearbyItem::ExecuteTask(UBehaviorTreeComponent& 
 	}
 	else
 	{
-		OwnerComp.GetBlackboardComponent()->SetValueAsObject(BlackboardKey.SelectedKeyName, ItemsInHouse[0]);
+		BlackboardComp->SetValueAsObject(BlackboardKey.SelectedKeyName, ItemsInHouse[0]);
 		return EBTNodeResult::Succeeded;
 	}
 }

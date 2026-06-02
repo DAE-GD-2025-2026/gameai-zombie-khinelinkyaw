@@ -1,5 +1,7 @@
 ﻿#include "ZombiePluginUtils.h"
 
+#include <GameAI_Zombie/Common/InventoryComponent.h>
+
 TArray<TObjectPtr<ABaseItem>> PluginUtils::GetAllItemsInHouse(AHouse const* House,
 	TSet<TObjectPtr<ABaseItem>> Items)
 {
@@ -11,6 +13,8 @@ TArray<TObjectPtr<ABaseItem>> PluginUtils::GetAllItemsInHouse(AHouse const* Hous
 	
 	for (auto const Item : Items)
 	{
+		if (Item->IsHidden()) continue;
+		
 		auto ItemLocation {Item->GetActorLocation()};
 		ItemLocation.Z += 1;
 		if (HouseBox.IsInside(ItemLocation))
@@ -20,4 +24,20 @@ TArray<TObjectPtr<ABaseItem>> PluginUtils::GetAllItemsInHouse(AHouse const* Hous
 	}
 	
 	return Result;
+}
+
+int PluginUtils::GetFirstEmptyInventoryIndex(UInventoryComponent const* InvComp)
+{
+	auto Items { InvComp->GetInventory() };
+	int InventorySize { InvComp->GetInventoryCapacity() };
+	
+	for (int Index{0}; Index < InventorySize; ++Index)
+	{
+		if (Items[Index] == nullptr)
+		{
+			return Index;
+		}
+	}
+	
+	return -1;
 }

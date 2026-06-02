@@ -103,8 +103,6 @@ void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 	GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
 	FString::Printf(TEXT("Saw Something!")));
 	
-	//auto blackBoard {GetOwner()->GetComponentByClass<UBlackboardComponent>()};
-
 	if (ABaseItem* Item { Cast<ABaseItem>(Actor) })
 	{
 		Items.Add(Item);
@@ -144,6 +142,4 @@ void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 		NearbyHouses.Add(House);
 		UpdateClosestHouse();
 	}
-	
-	//UpdateSurvivorTargetLocation();
 }
