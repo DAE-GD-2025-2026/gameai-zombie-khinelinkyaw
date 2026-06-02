@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "UBTTask_FindRandomLocation.generated.h"
+#include "BTTask_FindRandomLocation.generated.h"
 
 UCLASS()
 class LINKYAWKHINEZOMBIERUNTIME_API UBTTask_FindRandomLocation final : public UBTTask_BlackboardBase
