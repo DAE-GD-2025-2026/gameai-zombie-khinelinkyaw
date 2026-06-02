@@ -8,7 +8,7 @@ UCLASS()
 class LINKYAWKHINEZOMBIERUNTIME_API UBTDecorator_IsInsideHouse : public UBTDecorator
 {
 	GENERATED_BODY()
-private:
+
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
 	FBlackboardKeySelector HouseKey;
 	
