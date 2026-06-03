@@ -27,6 +27,7 @@ private:
 	UPROPERTY() TSet<TObjectPtr<ABaseItem>> Pistols;
 	UPROPERTY() TSet<TObjectPtr<ABaseItem>> GarbageItems;
 	UPROPERTY() TSet<TObjectPtr<AHouse>> NearbyHouses;
+	UPROPERTY() TSet<TObjectPtr<AHouse>> VisitedHouses;
 	
 	UPROPERTY() TObjectPtr<AHouse> ActiveHouse;
 	
@@ -50,6 +51,8 @@ public:
 	UStudentPerceptor();
 	
 	TSet<TObjectPtr<ABaseItem>>& GetPerceivedItems() { return Items; }
+	
+	void MarkHouseAsVisisted(TObjectPtr<AHouse> House);
 	
 	template<typename T>
 	TObjectPtr<T> GetClosestItem(TSet<TObjectPtr<T>>const& Actors) const;

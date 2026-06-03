@@ -88,6 +88,17 @@ UStudentPerceptor::UStudentPerceptor()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+void UStudentPerceptor::MarkHouseAsVisisted(TObjectPtr<AHouse> House)
+{
+	VisitedHouses.Add(House);
+	NearbyHouses.Remove(House);
+	
+	if (VisitedHouses.Num() > 5)
+	{
+		VisitedHouses.Empty();
+	}
+}
+
 void UStudentPerceptor::BeginPlay()
 {
 	Super::BeginPlay();
@@ -139,7 +150,10 @@ void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 	
 	if (AHouse* House { Cast<AHouse>(Actor) })
 	{
-		NearbyHouses.Add(House);
-		UpdateClosestHouse();
+		if (!VisitedHouses.Contains(House))
+		{
+			NearbyHouses.Add(House);
+			UpdateClosestHouse();
+		}
 	}
 }
