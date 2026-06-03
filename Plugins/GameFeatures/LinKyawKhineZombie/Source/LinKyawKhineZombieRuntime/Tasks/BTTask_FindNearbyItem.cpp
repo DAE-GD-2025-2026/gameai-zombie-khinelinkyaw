@@ -19,17 +19,10 @@ UBTTask_FindNearbyItem::UBTTask_FindNearbyItem()
 EBTNodeResult::Type UBTTask_FindNearbyItem::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIController const* AIController = OwnerComp.GetAIOwner();
-	if (!AIController || !AIController->GetPawn())
-	{
-		return EBTNodeResult::Failed;
-	}
+	if (!AIController || !AIController->GetPawn()) return EBTNodeResult::Failed;
 	
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
-	
-	if (!BlackboardComp)
-	{
-		return EBTNodeResult::Failed;
-	}
+	if (!BlackboardComp) return EBTNodeResult::Failed;
 	
 	AHouse const* House = Cast<AHouse>(BlackboardComp->GetValueAsObject(HouseKey.SelectedKeyName));
 	
