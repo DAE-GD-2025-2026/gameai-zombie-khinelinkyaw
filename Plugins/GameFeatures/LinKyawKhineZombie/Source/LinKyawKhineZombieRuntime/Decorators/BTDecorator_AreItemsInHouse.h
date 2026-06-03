@@ -12,9 +12,6 @@ class LINKYAWKHINEZOMBIERUNTIME_API UBTDecorator_AreItemsInHouse : public UBTDec
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
 	FBlackboardKeySelector HouseKey;
 	
-	UPROPERTY(EditAnywhere, Category = "Blackboard")
-	FBlackboardKeySelector SurvivorKey;
-	
 public:
 	UBTDecorator_AreItemsInHouse();
 	virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;

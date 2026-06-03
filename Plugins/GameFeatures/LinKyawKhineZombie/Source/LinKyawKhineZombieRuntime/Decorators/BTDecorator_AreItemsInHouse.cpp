@@ -8,28 +8,27 @@
 #include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
 #include <../PluginUtils/ZombiePluginUtils.h>
 
+#include "AIController.h"
+
 UBTDecorator_AreItemsInHouse::UBTDecorator_AreItemsInHouse()
 {
 	NodeName = "Are Items in House";
 	HouseKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTDecorator_AreItemsInHouse, HouseKey), AHouse::StaticClass());
-	SurvivorKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTDecorator_AreItemsInHouse, SurvivorKey), AActor::StaticClass());
 }
 
 bool UBTDecorator_AreItemsInHouse::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
-	UBlackboardComponent const* BlackboardComp = OwnerComp.GetBlackboardComponent();
+	AAIController const* AIController = OwnerComp.GetAIOwner();
+	if (!AIController || !AIController->GetPawn()) return EBTNodeResult::Failed;
 	
-	if (!BlackboardComp)
-	{
-		return false;
-	}
+	UBlackboardComponent const* BlackboardComp = OwnerComp.GetBlackboardComponent();
+	if (!BlackboardComp) return false;
 	
 	AHouse const* House = Cast<AHouse>(BlackboardComp->GetValueAsObject(HouseKey.SelectedKeyName));
-	AActor const* Survivor = Cast<AActor>(BlackboardComp->GetValueAsObject(SurvivorKey.SelectedKeyName));
+	//AActor const* Survivor = Cast<AActor>(BlackboardComp->GetValueAsObject(SurvivorKey.SelectedKeyName));
+	if (House == nullptr) return false;
 	
-	if (House == nullptr or Survivor == nullptr) return false;
-	
-	UStudentPerceptor* PerceptorComp { Survivor->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
 	
 	FVector HouseOrigin{}, HouseBoxExtend{};
 	House->GetActorBounds(false, HouseOrigin, HouseBoxExtend);
