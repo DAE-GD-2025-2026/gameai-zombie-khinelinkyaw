@@ -32,7 +32,9 @@ EBTNodeResult::Type UBTTask_FindNearbyItem::ExecuteTask(UBehaviorTreeComponent& 
 	}
 	
 	AHouse const* House = Cast<AHouse>(BlackboardComp->GetValueAsObject(HouseKey.SelectedKeyName));
-	FVector SurvivorLocation = AIController->GetPawn()->GetActorLocation();
+	
+	if (!House) return EBTNodeResult::Failed;
+	//FVector SurvivorLocation = AIController->GetPawn()->GetActorLocation();
 	
 	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
 	

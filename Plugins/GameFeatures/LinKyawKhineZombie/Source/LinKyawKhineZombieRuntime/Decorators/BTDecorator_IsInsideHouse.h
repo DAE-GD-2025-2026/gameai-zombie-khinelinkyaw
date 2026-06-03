@@ -5,7 +5,7 @@
 #include "BTDecorator_IsInsideHouse.generated.h"
 
 UCLASS()
-class LINKYAWKHINEZOMBIERUNTIME_API UBTDecorator_IsInsideHouse : public UBTDecorator
+class LINKYAWKHINEZOMBIERUNTIME_API UBTDecorator_IsInsideHouse: public UBTDecorator
 {
 	GENERATED_BODY()
 

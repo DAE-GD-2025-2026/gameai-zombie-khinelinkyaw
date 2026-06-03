@@ -11,7 +11,7 @@
 
 UBTTask_CollectNearbyItem::UBTTask_CollectNearbyItem()
 {
-	NodeName = "Find Nearby Item";
+	NodeName = "Collect Nearby Item";
 	BlackboardKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_CollectNearbyItem, BlackboardKey), ABaseItem::StaticClass());
 }
 
@@ -23,24 +23,20 @@ EBTNodeResult::Type UBTTask_CollectNearbyItem::ExecuteTask(UBehaviorTreeComponen
 		return EBTNodeResult::Failed;
 	}
 	
-	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
+	UBlackboardComponent const* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	
 	if (!BlackboardComp)
 	{
 		return EBTNodeResult::Failed;
 	}
-	FVector SurvivorLocation = AIController->GetPawn()->GetActorLocation();
-	
-	ABaseItem* Item = Cast<ABaseItem>(BlackboardComp->GetValueAsObject(BlackboardKey.SelectedKeyName));
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
-	
-	if (Item)
+
+	if (ABaseItem* Item = Cast<ABaseItem>(BlackboardComp->GetValueAsObject(BlackboardKey.SelectedKeyName)))
 	{
 		UInventoryComponent* InvComp { AIController->GetPawn()->GetComponentByClass<UInventoryComponent>() };
 
 		if (int FreeIndex{ PluginUtils::GetFirstEmptyInventoryIndex(InvComp) }; FreeIndex != -1)
 		{
-			BlackboardComp->SetValueAsObject(BlackboardKey.SelectedKeyName, nullptr);
+			//BlackboardComp->SetValueAsObject(BlackboardKey.SelectedKeyName, nullptr);
 			InvComp->GrabItem(FreeIndex, Item);
 			return EBTNodeResult::Succeeded;
 		}
