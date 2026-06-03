@@ -2,8 +2,6 @@
 
 #include <LinKyawKhineZombieRuntime/PluginUtils/ZombiePluginUtils.h>
 
-#include <GameAI_Zombie/Items/BaseItem.h>
-
 #include <AIController.h>
 #include <BehaviorTree/BlackboardComponent.h>
 
@@ -23,6 +21,11 @@ EBTNodeResult::Type UBTTask_ConsumeItemByType::ExecuteTask(UBehaviorTreeComponen
 	{
 		if (InvComp->UseItem(FirstIndex))
 		{
+			if (InvComp->GetInventory()[FirstIndex]->GetValue() == 0)
+			{
+				InvComp->RemoveItem(FirstIndex);
+			}
+			
 			return EBTNodeResult::Succeeded;
 		}
 		else

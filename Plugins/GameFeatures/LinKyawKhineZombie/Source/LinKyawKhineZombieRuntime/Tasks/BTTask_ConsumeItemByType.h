@@ -8,7 +8,7 @@
 #include "BTTask_ConsumeItemByType.generated.h"
 
 UCLASS()
-class LINKYAWKHINEZOMBIERUNTIME_API UBTTask_ConsumeItemByType final : public UBTTask_BlackboardBase
+class LINKYAWKHINEZOMBIERUNTIME_API UBTTask_ConsumeItemByType final : public UBTTaskNode
 {
 	GENERATED_BODY()
 
