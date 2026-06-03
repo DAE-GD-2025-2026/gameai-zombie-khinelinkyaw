@@ -20,12 +20,6 @@ class LINKYAWKHINEZOMBIERUNTIME_API UStudentPerceptor : public UActorComponent
 
 private:
 	UPROPERTY() TSet<TObjectPtr<ABaseItem>> Items;
-	
-	UPROPERTY() TSet<TObjectPtr<ABaseItem>> FoodItems;
-	UPROPERTY() TSet<TObjectPtr<ABaseItem>> MedkitItems;
-	UPROPERTY() TSet<TObjectPtr<ABaseItem>> Shotguns;
-	UPROPERTY() TSet<TObjectPtr<ABaseItem>> Pistols;
-	UPROPERTY() TSet<TObjectPtr<ABaseItem>> GarbageItems;
 	UPROPERTY() TSet<TObjectPtr<AHouse>> NearbyHouses;
 	UPROPERTY() TSet<TObjectPtr<AHouse>> VisitedHouses;
 	
@@ -52,7 +46,8 @@ public:
 	
 	TSet<TObjectPtr<ABaseItem>>& GetPerceivedItems() { return Items; }
 	
-	void MarkHouseAsVisisted(TObjectPtr<AHouse> House);
+	void MarkHouseAsVisited(TObjectPtr<AHouse> House);
+	void ClearVisitedHouses();
 	
 	template<typename T>
 	TObjectPtr<T> GetClosestItem(TSet<TObjectPtr<T>>const& Actors) const;

@@ -88,15 +88,15 @@ UStudentPerceptor::UStudentPerceptor()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UStudentPerceptor::MarkHouseAsVisisted(TObjectPtr<AHouse> House)
+void UStudentPerceptor::MarkHouseAsVisited(TObjectPtr<AHouse> House)
 {
 	VisitedHouses.Add(House);
 	NearbyHouses.Remove(House);
-	
-	if (VisitedHouses.Num() > 5)
-	{
-		VisitedHouses.Empty();
-	}
+}
+
+void UStudentPerceptor::ClearVisitedHouses()
+{
+	VisitedHouses.Empty();
 }
 
 void UStudentPerceptor::BeginPlay()
@@ -117,35 +117,6 @@ void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 	if (ABaseItem* Item { Cast<ABaseItem>(Actor) })
 	{
 		Items.Add(Item);
-		
-		switch (Item->GetItemType())
-		{
-		case EItemType::Food:
-			{
-				FoodItems.Add(Item);
-				break;
-			}
-		case EItemType::Medkit:
-			{
-				MedkitItems.Add(Item);
-				break;
-			}
-		case EItemType::Shotgun:
-			{
-				Shotguns.Add(Item);
-				break;
-			}
-		case EItemType::Pistol:
-			{
-				Pistols.Add(Item);
-				break;
-			}
-		case EItemType::Garbage:
-			{
-				GarbageItems.Add(Item);
-				break;
-			}
-		}
 	}
 	
 	if (AHouse* House { Cast<AHouse>(Actor) })
