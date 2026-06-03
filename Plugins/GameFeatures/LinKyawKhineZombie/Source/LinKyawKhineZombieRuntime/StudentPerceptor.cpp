@@ -6,28 +6,13 @@
 #include <GameAI_Zombie/Items/BaseItem.h>
 #include <GameAI_Zombie/Survivor/SurvivorPawn.h>
 #include <GameAI_Zombie/Village/House/House.h>
-
-#include "Common/InventoryComponent.h"
+#include <GameAI_Zombie/Zombies/BaseZombie.h>
 
 #include <AIController.h>
 #include <Algo/MinElement.h>
 #include <Math/Box.h>
 
 #include <BehaviorTree/BlackboardComponent.h>
-
-void UStudentPerceptor::UpdateSurvivorTargetLocation() const
-{
-	if (!NearbyHouses.IsEmpty())
-	{
-		auto HousePtr { GetClosestItem<AHouse>(NearbyHouses) };
-		APawn* OwningPawn { Cast<APawn>(GetOwner())};
-		AAIController* AIController  = Cast<AAIController>(OwningPawn->GetController());
-		auto BBComp {AIController->GetBlackboardComponent()};
-		
-		BBComp->SetValueAsVector(TEXT("TargetLocation"), HousePtr->GetActorLocation());
-		BBComp->SetValueAsObject(TEXT("ActiveTarget"), HousePtr);
-	}
-}
 
 void UStudentPerceptor::UpdateClosestHouse() const
 {
@@ -42,45 +27,17 @@ void UStudentPerceptor::UpdateClosestHouse() const
 	}
 }
 
-bool UStudentPerceptor::IsHealthNeeded() const
+void UStudentPerceptor::UpdateClosestZombie() const
 {
-	if (UHealthComponent const* HealthComp = GetOwner()->GetComponentByClass<UHealthComponent>())
-	{
-		auto CurrentHealth {HealthComp->GetHealth()};
-		if (CurrentHealth < 5)
-		{
-			return true;
-		}
-	}
-	return false;
-}
+	if (NearbyZombies.IsEmpty()) return;
+	
+	auto ZombiePtr{ GetClosestItem<ABaseZombie>(NearbyZombies) };
+	APawn* OwningPawn { Cast<APawn>(GetOwner())};
+	AAIController* AIController  = Cast<AAIController>(OwningPawn->GetController());
+	auto BBComp {AIController->GetBlackboardComponent()};
 
-bool UStudentPerceptor::IsFoodNeeded() const
-{
-	if (UStaminaComponent const* StamComp = GetOwner()->GetComponentByClass<UStaminaComponent>())
-	{
-		auto CurrentStamina {StamComp->GetCurrentStamina()};
-		if (CurrentStamina < 5)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-bool UStudentPerceptor::IsAGunEquipped() const
-{
-	if (UInventoryComponent const* InvComp = GetOwner()->GetComponentByClass<UInventoryComponent>())
-	{
-		for (auto InvItems { InvComp->GetInventory() }; auto const  InvItem : InvItems)
-		{
-			if (InvItem->GetItemType() == EItemType::Shotgun or InvItem->GetItemType() == EItemType::Pistol)
-			{
-				return true;
-			}
-		}
-	}
-	return false;
+	BBComp->SetValueAsObject(TEXT("NearestZombie"), ZombiePtr);
+	BBComp->SetValueAsBool(TEXT("ZombieDetected"), true);
 }
 
 UStudentPerceptor::UStudentPerceptor()
@@ -116,6 +73,7 @@ void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 	
 	if (ABaseItem* Item { Cast<ABaseItem>(Actor) })
 	{
+		RemoveNullPtrsFromSet<ABaseItem>(Items);
 		Items.Add(Item);
 	}
 	
@@ -123,8 +81,17 @@ void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 	{
 		if (!VisitedHouses.Contains(House))
 		{
+			RemoveNullPtrsFromSet<AHouse>(NearbyHouses);
+			RemoveNullPtrsFromSet<AHouse>(VisitedHouses);
 			NearbyHouses.Add(House);
 			UpdateClosestHouse();
 		}
+	}
+	
+	if (ABaseZombie* Zombie { Cast<ABaseZombie>(Actor) })
+	{
+		RemoveNullPtrsFromSet<ABaseZombie>(NearbyZombies);
+		NearbyZombies.Add(Zombie);
+		UpdateClosestZombie();
 	}
 }

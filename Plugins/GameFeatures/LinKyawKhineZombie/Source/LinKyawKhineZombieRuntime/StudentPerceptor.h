@@ -10,6 +10,7 @@
 #include "Perception/AISense_Damage.h"
 #include "StudentPerceptor.generated.h"
 
+class ABaseZombie;
 class AHouse;
 class ABaseItem;
 
@@ -20,25 +21,23 @@ class LINKYAWKHINEZOMBIERUNTIME_API UStudentPerceptor : public UActorComponent
 
 private:
 	UPROPERTY() TSet<TObjectPtr<ABaseItem>> Items;
+	UPROPERTY() TSet<TObjectPtr<ABaseZombie>> NearbyZombies;
 	UPROPERTY() TSet<TObjectPtr<AHouse>> NearbyHouses;
 	UPROPERTY() TSet<TObjectPtr<AHouse>> VisitedHouses;
 	
 	UPROPERTY() TObjectPtr<AHouse> ActiveHouse;
 	
 	UFUNCTION()
-	void UpdateSurvivorTargetLocation() const;
-	
-	UFUNCTION()
 	void UpdateClosestHouse() const;
-
-	UFUNCTION()
-	bool IsHealthNeeded() const;
 	
 	UFUNCTION()
-	bool IsFoodNeeded() const;
+	void UpdateClosestZombie() const;
 	
-	UFUNCTION()
-	bool IsAGunEquipped() const;
+	template<typename T>
+	TObjectPtr<T> GetClosestItem(TSet<TObjectPtr<T>>const& Actors) const;
+	
+	template <typename T>
+	void RemoveNullPtrsFromSet(TSet<TObjectPtr<T>>& Actors);
 	
 public:
 	// Sets default values for this component's properties
@@ -49,14 +48,23 @@ public:
 	void MarkHouseAsVisited(TObjectPtr<AHouse> House);
 	void ClearVisitedHouses();
 	
-	template<typename T>
-	TObjectPtr<T> GetClosestItem(TSet<TObjectPtr<T>>const& Actors) const;
-	
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
 	virtual void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 };
+
+template <typename T>
+void UStudentPerceptor::RemoveNullPtrsFromSet(TSet<TObjectPtr<T>>& Actors)
+{
+	for (auto Iter { Actors.CreateIterator() }; Iter; ++Iter)
+	{
+		if (*Iter == nullptr)
+		{
+			Iter.RemoveCurrent();
+		}
+	}
+}
 
 template <typename T>
 TObjectPtr<T> UStudentPerceptor::GetClosestItem(TSet<TObjectPtr<T>> const& Actors) const
