@@ -13,7 +13,7 @@ TArray<TObjectPtr<ABaseItem>> PluginUtils::GetAllItemsInHouse(AHouse const* Hous
 	
 	for (auto const Item : Items)
 	{
-		if (Item->IsHidden()) continue;
+		if (Item == nullptr or Item->IsHidden()) continue;
 		
 		auto ItemLocation {Item->GetActorLocation()};
 		ItemLocation.Z += 1;
