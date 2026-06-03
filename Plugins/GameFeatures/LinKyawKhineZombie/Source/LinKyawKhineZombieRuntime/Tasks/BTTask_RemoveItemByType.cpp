@@ -21,15 +21,8 @@ EBTNodeResult::Type UBTTask_RemoveItemByType::ExecuteTask(UBehaviorTreeComponent
 	
 	if (int FirstIndex {PluginUtils::GetFirstItemByType(*InvComp, ItemType)}; FirstIndex != -1)
 	{
-		if (InvComp->RemoveItem(FirstIndex))
-		{
-			return EBTNodeResult::Succeeded;
-		}
-		else
-		{
-			return EBTNodeResult::Aborted;
-		}
+		InvComp->RemoveItem(FirstIndex);
 	}
 	
-	return EBTNodeResult::Failed;
+	return EBTNodeResult::Succeeded;
 }
