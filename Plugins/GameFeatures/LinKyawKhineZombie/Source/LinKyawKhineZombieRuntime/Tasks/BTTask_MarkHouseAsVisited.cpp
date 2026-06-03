@@ -26,14 +26,13 @@ EBTNodeResult::Type UBTTask_MarkHouseAsVisited::ExecuteTask(UBehaviorTreeCompone
 	{
 		return EBTNodeResult::Failed;
 	}
-	FVector SurvivorLocation = AIController->GetPawn()->GetActorLocation();
 	
 	AHouse* House = Cast<AHouse>(BlackboardComp->GetValueAsObject(BlackboardKey.SelectedKeyName));
 	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
 	
 	if (House)
 	{
-		PerceptorComp->MarkHouseAsVisisted(House);
+		PerceptorComp->MarkHouseAsVisited(House);
 		BlackboardComp->SetValueAsObject(BlackboardKey.SelectedKeyName, nullptr);
 		return EBTNodeResult::Succeeded;
 	}
