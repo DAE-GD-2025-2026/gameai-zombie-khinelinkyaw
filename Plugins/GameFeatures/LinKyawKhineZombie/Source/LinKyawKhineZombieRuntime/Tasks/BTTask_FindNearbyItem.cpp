@@ -1,9 +1,7 @@
 ﻿#include "BTTask_FindNearbyItem.h"
 
-#include <../PluginUtils/ZombiePluginUtils.h>
 #include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
 
-#include <GameAI_Zombie/Village/House/House.h>
 #include <GameAI_Zombie/Items/BaseItem.h>
 
 #include <AIController.h>
@@ -12,7 +10,7 @@
 UBTTask_FindNearbyItem::UBTTask_FindNearbyItem()
 {
 	NodeName = "Find Nearby Item";
-	HouseKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_FindNearbyItem, HouseKey), AHouse::StaticClass());
+	Range = 100.f;
 	BlackboardKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_FindNearbyItem, BlackboardKey), ABaseItem::StaticClass());
 }
 
@@ -24,21 +22,21 @@ EBTNodeResult::Type UBTTask_FindNearbyItem::ExecuteTask(UBehaviorTreeComponent& 
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComp) return EBTNodeResult::Failed;
 	
-	AHouse const* House = Cast<AHouse>(BlackboardComp->GetValueAsObject(HouseKey.SelectedKeyName));
-	
-	if (!House) return EBTNodeResult::Failed;
-	
 	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	auto Items { PerceptorComp->GetPerceivedItems() };
 	
-	auto ItemsInHouse { PluginUtils::GetAllItemsInHouse(House, PerceptorComp->GetPerceivedItems()) };
+	FVector const SurvivorLocation { AIController->GetPawn()->GetActorLocation() };
+	for (auto const Item : Items)
+	{
+		FVector const ItemLocation { Item->GetActorLocation() };
+		FVector const Distance { SurvivorLocation - ItemLocation };
+		
+		if (Distance.Size() < Range)
+		{
+			BlackboardComp->SetValueAsObject(BlackboardKey.SelectedKeyName, Item);
+			return EBTNodeResult::Succeeded;			
+		}
+	}
 	
-	if (ItemsInHouse.IsEmpty())
-	{
-		return EBTNodeResult::Failed;
-	}
-	else
-	{
-		BlackboardComp->SetValueAsObject(BlackboardKey.SelectedKeyName, ItemsInHouse[0]);
-		return EBTNodeResult::Succeeded;
-	}
+	return EBTNodeResult::Failed;
 }

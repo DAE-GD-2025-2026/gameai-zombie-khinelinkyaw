@@ -10,7 +10,7 @@ class LINKYAWKHINEZOMBIERUNTIME_API UBTTask_FindNearbyItem final : public UBTTas
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
-	FBlackboardKeySelector HouseKey;
+	float Range;
 	
 public:
 	UBTTask_FindNearbyItem();
