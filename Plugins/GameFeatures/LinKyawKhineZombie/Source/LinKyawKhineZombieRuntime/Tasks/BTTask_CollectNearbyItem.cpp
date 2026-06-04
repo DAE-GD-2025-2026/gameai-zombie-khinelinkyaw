@@ -1,7 +1,6 @@
 ﻿#include "BTTask_CollectNearbyItem.h"
 
-#include <../PluginUtils/ZombiePluginUtils.h>
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include <LinKyawKhineZombieRuntime/PluginUtils/ZombiePluginUtils.h>
 
 #include <GameAI_Zombie/Items/BaseItem.h>
 #include <GameAI_Zombie/Common/InventoryComponent.h>
@@ -18,17 +17,10 @@ UBTTask_CollectNearbyItem::UBTTask_CollectNearbyItem()
 EBTNodeResult::Type UBTTask_CollectNearbyItem::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIController const* AIController = OwnerComp.GetAIOwner();
-	if (!AIController || !AIController->GetPawn())
-	{
-		return EBTNodeResult::Failed;
-	}
+	if (!AIController || !AIController->GetPawn()) return EBTNodeResult::Failed;
 	
-	UBlackboardComponent const* BlackboardComp = OwnerComp.GetBlackboardComponent();
-	
-	if (!BlackboardComp)
-	{
-		return EBTNodeResult::Failed;
-	}
+	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
+	if (!BlackboardComp) return EBTNodeResult::Failed;
 
 	if (ABaseItem* Item = Cast<ABaseItem>(BlackboardComp->GetValueAsObject(BlackboardKey.SelectedKeyName)))
 	{
@@ -36,7 +28,7 @@ EBTNodeResult::Type UBTTask_CollectNearbyItem::ExecuteTask(UBehaviorTreeComponen
 
 		if (int FreeIndex{ PluginUtils::GetFirstEmptyInventoryIndex(InvComp) }; FreeIndex != -1)
 		{
-			//BlackboardComp->SetValueAsObject(BlackboardKey.SelectedKeyName, nullptr);
+			BlackboardComp->SetValueAsObject(BlackboardKey.SelectedKeyName, nullptr);
 			InvComp->GrabItem(FreeIndex, Item);
 			return EBTNodeResult::Succeeded;
 		}
