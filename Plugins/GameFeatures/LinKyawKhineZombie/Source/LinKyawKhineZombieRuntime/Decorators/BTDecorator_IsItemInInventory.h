@@ -1,9 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/BTDecorator.h"
-
-#include <GameAI_Zombie/Items/ItemType.h>
+#include "BehaviorTree/Decorators/BTDecorator_Blackboard.h"
 
 #include "BTDecorator_IsItemInInventory.generated.h"
 
@@ -13,8 +11,7 @@ class LINKYAWKHINEZOMBIERUNTIME_API UBTDecorator_IsItemInInventory : public UBTD
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
-	EItemType ItemType;
-
+	FBlackboardKeySelector ItemKey;
 	
 public:
 	UBTDecorator_IsItemInInventory();
