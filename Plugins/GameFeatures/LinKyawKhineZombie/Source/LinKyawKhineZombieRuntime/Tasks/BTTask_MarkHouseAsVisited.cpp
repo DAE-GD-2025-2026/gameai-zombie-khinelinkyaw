@@ -15,17 +15,10 @@ UBTTask_MarkHouseAsVisited::UBTTask_MarkHouseAsVisited()
 EBTNodeResult::Type UBTTask_MarkHouseAsVisited::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIController const* AIController = OwnerComp.GetAIOwner();
-	if (!AIController || !AIController->GetPawn())
-	{
-		return EBTNodeResult::Failed;
-	}
+	if (!AIController || !AIController->GetPawn()) return EBTNodeResult::Failed;
 	
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
-	
-	if (!BlackboardComp)
-	{
-		return EBTNodeResult::Failed;
-	}
+	if (!BlackboardComp) return EBTNodeResult::Failed;
 	
 	AHouse* House = Cast<AHouse>(BlackboardComp->GetValueAsObject(BlackboardKey.SelectedKeyName));
 	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
