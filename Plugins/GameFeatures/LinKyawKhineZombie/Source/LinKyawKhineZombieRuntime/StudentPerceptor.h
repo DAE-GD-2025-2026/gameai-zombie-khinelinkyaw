@@ -8,6 +8,9 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AISenseConfig_Damage.h"
 #include "Perception/AISense_Damage.h"
+
+#include <GameAI_Zombie/Items/ItemType.h>
+
 #include "StudentPerceptor.generated.h"
 
 class ABaseZombie;
@@ -43,7 +46,8 @@ public:
 	// Sets default values for this component's properties
 	UStudentPerceptor();
 	
-	TSet<TObjectPtr<ABaseItem>>& GetPerceivedItems() { return Items; }
+	TSet<TObjectPtr<ABaseItem>> GetPerceivedItems();
+	TSet<TObjectPtr<ABaseItem>> GetPerceivedItemsByType(EItemType ItemType);
 	
 	void MarkHouseAsVisited(TObjectPtr<AHouse> House);
 	void ClearVisitedHouses();

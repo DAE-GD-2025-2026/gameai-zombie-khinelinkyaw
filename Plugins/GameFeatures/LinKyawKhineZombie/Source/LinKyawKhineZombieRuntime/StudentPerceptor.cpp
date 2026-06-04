@@ -45,6 +45,36 @@ UStudentPerceptor::UStudentPerceptor()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+TSet<TObjectPtr<ABaseItem>> UStudentPerceptor::GetPerceivedItems()
+{
+	TSet<TObjectPtr<ABaseItem>> Result{};
+	
+	for (auto const Item: Items)
+	{
+		if (Item == nullptr or Item->IsHidden()) continue;
+		Result.Add(Item);
+	}
+	
+	return Result;
+}
+
+TSet<TObjectPtr<ABaseItem>> UStudentPerceptor::GetPerceivedItemsByType(EItemType ItemType)
+{
+	TSet<TObjectPtr<ABaseItem>> Result{};
+	
+	for (auto const Item: Items)
+	{
+		if (Item == nullptr or Item->IsHidden()) continue;
+		
+		if (Item->GetItemType() == ItemType)
+		{
+			Result.Add(Item);
+		}
+	}
+	
+	return Result;
+}
+
 void UStudentPerceptor::MarkHouseAsVisited(TObjectPtr<AHouse> House)
 {
 	VisitedHouses.Add(House);
