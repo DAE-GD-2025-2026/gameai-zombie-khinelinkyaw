@@ -10,6 +10,7 @@
 #include "Perception/AISense_Damage.h"
 
 #include <GameAI_Zombie/Items/ItemType.h>
+#include <GameAI_Zombie/PurgeZones/PurgeZone.h>
 
 #include "StudentPerceptor.generated.h"
 
@@ -27,6 +28,7 @@ private:
 	UPROPERTY() TSet<TObjectPtr<ABaseZombie>> NearbyZombies;
 	UPROPERTY() TSet<TObjectPtr<AHouse>> NearbyHouses;
 	UPROPERTY() TSet<TObjectPtr<AHouse>> VisitedHouses;
+	UPROPERTY() TSet<TObjectPtr<APurgeZone>> PurgeZones;
 	
 	UPROPERTY() TObjectPtr<AHouse> ActiveHouse;
 	
@@ -49,10 +51,13 @@ public:
 	TSet<TObjectPtr<ABaseItem>> GetPerceivedItems();
 	TSet<TObjectPtr<ABaseItem>> GetPerceivedItemsByType(EItemType ItemType);
 	
+	TArray<TObjectPtr<APurgeZone>> GetSortedPurgeZones();
+	
 	void MarkHouseAsVisited(TObjectPtr<AHouse> House);
 	void ClearVisitedHouses();
 	
 	virtual void BeginPlay() override;
+	void SetPurgeZoneDetectionBlackboard();
 
 	UFUNCTION()
 	virtual void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);

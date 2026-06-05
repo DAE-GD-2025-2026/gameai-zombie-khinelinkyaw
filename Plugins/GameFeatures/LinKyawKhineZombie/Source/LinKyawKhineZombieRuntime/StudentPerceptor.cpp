@@ -75,6 +75,30 @@ TSet<TObjectPtr<ABaseItem>> UStudentPerceptor::GetPerceivedItemsByType(EItemType
 	return Result;
 }
 
+TArray<TObjectPtr<APurgeZone>> UStudentPerceptor::GetSortedPurgeZones()
+{
+	TArray<TObjectPtr<APurgeZone>> Result{};
+	
+	for (auto const PurgeZone : PurgeZones)
+	{
+		if (PurgeZone != nullptr)
+		{
+			Result.Add(PurgeZone);
+		}
+	}
+	
+	FVector SurvivorLocation { GetOwner()->GetActorLocation() };
+	
+	Result.Sort([SurvivorLocation](TObjectPtr<APurgeZone> const& PurgeZoneA, TObjectPtr<APurgeZone> const& PurgeZoneB)
+	{
+		FVector PurgeZoneALocation{ PurgeZoneA->GetActorLocation() };
+		FVector PurgeZoneBLocation{ PurgeZoneB->GetActorLocation() };
+		return (PurgeZoneALocation - SurvivorLocation).SizeSquared() < (PurgeZoneBLocation - SurvivorLocation).SizeSquared();
+	});
+	
+	return Result;
+}
+
 void UStudentPerceptor::MarkHouseAsVisited(TObjectPtr<AHouse> House)
 {
 	VisitedHouses.Add(House);
@@ -94,6 +118,14 @@ void UStudentPerceptor::BeginPlay()
 	{
 		PerceptionComp->OnTargetPerceptionUpdated.AddDynamic(this, &UStudentPerceptor::OnPerceptionUpdated);
 	}
+}
+
+void UStudentPerceptor::SetPurgeZoneDetectionBlackboard()
+{
+	APawn const* OwningPawn { Cast<APawn>(GetOwner())};
+	AAIController* AIController  = Cast<AAIController>(OwningPawn->GetController());
+	auto const BBComp {AIController->GetBlackboardComponent()};
+	BBComp->SetValueAsBool(TEXT("PurgeZoneDetected"), true);
 }
 
 void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
@@ -123,5 +155,12 @@ void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 		RemoveNullPtrsFromSet<ABaseZombie>(NearbyZombies);
 		NearbyZombies.Add(Zombie);
 		UpdateClosestZombie();
+	}
+	
+	if (APurgeZone* PurgeZone { Cast<APurgeZone>(Actor) })
+	{
+		RemoveNullPtrsFromSet<APurgeZone>(PurgeZones);
+		PurgeZones.Add(PurgeZone);
+		SetPurgeZoneDetectionBlackboard();
 	}
 }
