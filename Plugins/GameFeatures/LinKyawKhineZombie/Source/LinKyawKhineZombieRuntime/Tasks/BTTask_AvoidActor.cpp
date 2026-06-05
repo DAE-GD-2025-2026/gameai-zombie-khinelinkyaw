@@ -22,11 +22,14 @@ EBTNodeResult::Type UBTTask_AvoidActor::ExecuteTask(UBehaviorTreeComponent& Owne
 	{
 		FVector const ActorLocation { ActorToAvoid->GetActorLocation() };
 		FVector const SurvivorPosition { AIController->GetPawn()->GetActorLocation() };
-		FVector const AvoidLocation {
+		FVector AvoidLocation {
 			SurvivorPosition.X + ActorLocation.X,
 			SurvivorPosition.Y + ActorLocation.Y,
 			SurvivorPosition.Z
 		};
+		
+		AvoidLocation = AvoidLocation.GetSafeNormal() * 5.f; 
+		AvoidLocation.Z = SurvivorPosition.Z;
 		
 		BlackboardComp->SetValueAsVector(DestinationKey.SelectedKeyName, AvoidLocation);
 		return EBTNodeResult::Succeeded;
