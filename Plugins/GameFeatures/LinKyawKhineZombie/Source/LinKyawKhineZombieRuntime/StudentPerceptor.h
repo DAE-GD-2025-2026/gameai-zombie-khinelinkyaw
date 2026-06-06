@@ -44,6 +44,9 @@ private:
 	template <typename T>
 	void RemoveNullPtrsFromSet(TSet<TObjectPtr<T>>& Actors);
 	
+	template<typename T>
+	TArray<TObjectPtr<T>> GetSortedObjects(TSet<TObjectPtr<T>> const& Actors) const;
+	
 public:
 	// Sets default values for this component's properties
 	UStudentPerceptor();
@@ -51,7 +54,8 @@ public:
 	TSet<TObjectPtr<ABaseItem>> GetPerceivedItems();
 	TSet<TObjectPtr<ABaseItem>> GetPerceivedItemsByType(EItemType ItemType);
 	
-	TArray<TObjectPtr<APurgeZone>> GetSortedPurgeZones();
+	TArray<TObjectPtr<APurgeZone>> GetSortedPurgeZones() const;
+	TArray<TObjectPtr<ABaseZombie>> GetSortedZombies();
 	
 	void MarkHouseAsVisited(TObjectPtr<AHouse> House);
 	void ClearVisitedHouses();
@@ -73,6 +77,31 @@ void UStudentPerceptor::RemoveNullPtrsFromSet(TSet<TObjectPtr<T>>& Actors)
 			Iter.RemoveCurrent();
 		}
 	}
+}
+
+template <typename T>
+TArray<TObjectPtr<T>> UStudentPerceptor::GetSortedObjects(TSet<TObjectPtr<T>> const& Actors) const
+{
+	TArray<TObjectPtr<T>> Result{};
+	
+	for (auto const Actor : Actors)
+	{
+		if (Actor != nullptr)
+		{
+			Result.Add(Actor);
+		}
+	}
+	
+	FVector SurvivorLocation { GetOwner()->GetActorLocation() };
+	
+	Result.Sort([SurvivorLocation](TObjectPtr<T> const& ActorA, TObjectPtr<T> const& ActorB)
+	{
+		FVector ActorALocation{ ActorA->GetActorLocation() };
+		FVector ActorBLocation{ ActorB->GetActorLocation() };
+		return (ActorALocation - SurvivorLocation).SizeSquared() < (ActorBLocation - SurvivorLocation).SizeSquared();
+	});
+	
+	return Result;
 }
 
 template <typename T>

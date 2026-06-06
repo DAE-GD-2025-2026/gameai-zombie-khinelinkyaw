@@ -75,28 +75,14 @@ TSet<TObjectPtr<ABaseItem>> UStudentPerceptor::GetPerceivedItemsByType(EItemType
 	return Result;
 }
 
-TArray<TObjectPtr<APurgeZone>> UStudentPerceptor::GetSortedPurgeZones()
+TArray<TObjectPtr<APurgeZone>> UStudentPerceptor::GetSortedPurgeZones() const
 {
-	TArray<TObjectPtr<APurgeZone>> Result{};
-	
-	for (auto const PurgeZone : PurgeZones)
-	{
-		if (PurgeZone != nullptr)
-		{
-			Result.Add(PurgeZone);
-		}
-	}
-	
-	FVector SurvivorLocation { GetOwner()->GetActorLocation() };
-	
-	Result.Sort([SurvivorLocation](TObjectPtr<APurgeZone> const& PurgeZoneA, TObjectPtr<APurgeZone> const& PurgeZoneB)
-	{
-		FVector PurgeZoneALocation{ PurgeZoneA->GetActorLocation() };
-		FVector PurgeZoneBLocation{ PurgeZoneB->GetActorLocation() };
-		return (PurgeZoneALocation - SurvivorLocation).SizeSquared() < (PurgeZoneBLocation - SurvivorLocation).SizeSquared();
-	});
-	
-	return Result;
+	return GetSortedObjects<APurgeZone>(PurgeZones);
+}
+
+TArray<TObjectPtr<ABaseZombie>> UStudentPerceptor::GetSortedZombies()
+{
+	return GetSortedObjects<ABaseZombie>(NearbyZombies);
 }
 
 void UStudentPerceptor::MarkHouseAsVisited(TObjectPtr<AHouse> House)
@@ -132,6 +118,12 @@ void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
 	FString::Printf(TEXT("Saw Something!")));
+	
+	if (Stimulus.Type == UAISense::GetSenseID<UAISense_Damage>())
+	{
+		GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
+	FString::Printf(TEXT("Ouch!")));
+	}
 	
 	if (ABaseItem* Item { Cast<ABaseItem>(Actor) })
 	{
