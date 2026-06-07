@@ -4,7 +4,7 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 UBTService_ArePurgeZonesInRange::UBTService_ArePurgeZonesInRange()
 {
@@ -23,7 +23,7 @@ void UBTService_ArePurgeZonesInRange::TickNode(UBehaviorTreeComponent& OwnerComp
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComp) return;
 	
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	auto PurgeZones { PerceptorComp->GetSortedPurgeZones() };
 	
 	if (!PurgeZones.IsEmpty()) 

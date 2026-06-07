@@ -4,7 +4,7 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 UBTService_MarkHouseAsVisited::UBTService_MarkHouseAsVisited()
 {
@@ -23,7 +23,7 @@ void UBTService_MarkHouseAsVisited::TickNode(UBehaviorTreeComponent& OwnerComp, 
 	if (!BlackboardComp) return;
 	
 	AHouse* House = Cast<AHouse>(BlackboardComp->GetValueAsObject(BlackboardKey.SelectedKeyName));
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	
 	if (House)
 	{

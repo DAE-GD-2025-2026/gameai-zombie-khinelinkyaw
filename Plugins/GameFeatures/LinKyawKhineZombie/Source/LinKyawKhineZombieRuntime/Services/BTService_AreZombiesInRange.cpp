@@ -4,7 +4,7 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 UBTService_AreZombiesInRange::UBTService_AreZombiesInRange()
 {
@@ -23,7 +23,7 @@ void UBTService_AreZombiesInRange::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComp) return;
 	
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	auto Zombies { PerceptorComp->GetSortedZombies() };
 	
 	if (!Zombies.IsEmpty()) 

@@ -1,6 +1,6 @@
 ﻿#include "BTDecorator_AreItemsNearby.h"
 
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 #include <GameAI_Zombie/Items/BaseItem.h>
 
@@ -21,7 +21,7 @@ bool UBTDecorator_AreItemsNearby::CalculateRawConditionValue(UBehaviorTreeCompon
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComp) return false;
 	
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	auto Items { PerceptorComp->GetPerceivedItems() };
 	
 	FVector const SurvivorLocation { AIController->GetPawn()->GetActorLocation() };

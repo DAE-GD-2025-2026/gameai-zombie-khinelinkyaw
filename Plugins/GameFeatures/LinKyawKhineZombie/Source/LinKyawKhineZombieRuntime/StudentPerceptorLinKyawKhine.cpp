@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "StudentPerceptor.h"
+#include "StudentPerceptorLinKyawKhine.h"
 
 #include <GameAI_Zombie/Items/BaseItem.h>
 #include <GameAI_Zombie/Survivor/SurvivorPawn.h>
@@ -14,7 +14,7 @@
 
 #include <BehaviorTree/BlackboardComponent.h>
 
-void UStudentPerceptor::UpdateClosestHouse() const
+void UStudentPerceptorLinKyawKhine::UpdateClosestHouse() const
 {
 	if (!NearbyHouses.IsEmpty())
 	{
@@ -27,7 +27,7 @@ void UStudentPerceptor::UpdateClosestHouse() const
 	}
 }
 
-void UStudentPerceptor::UpdateClosestZombie() const
+void UStudentPerceptorLinKyawKhine::UpdateClosestZombie() const
 {
 	if (NearbyZombies.IsEmpty()) return;
 	
@@ -40,12 +40,12 @@ void UStudentPerceptor::UpdateClosestZombie() const
 	BBComp->SetValueAsBool(TEXT("ZombieDetected"), true);
 }
 
-UStudentPerceptor::UStudentPerceptor()
+UStudentPerceptorLinKyawKhine::UStudentPerceptorLinKyawKhine()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-TSet<TObjectPtr<ABaseItem>> UStudentPerceptor::GetPerceivedItems()
+TSet<TObjectPtr<ABaseItem>> UStudentPerceptorLinKyawKhine::GetPerceivedItems()
 {
 	TSet<TObjectPtr<ABaseItem>> Result{};
 	
@@ -58,7 +58,7 @@ TSet<TObjectPtr<ABaseItem>> UStudentPerceptor::GetPerceivedItems()
 	return Result;
 }
 
-TSet<TObjectPtr<ABaseItem>> UStudentPerceptor::GetPerceivedItemsByType(EItemType ItemType)
+TSet<TObjectPtr<ABaseItem>> UStudentPerceptorLinKyawKhine::GetPerceivedItemsByType(EItemType ItemType)
 {
 	TSet<TObjectPtr<ABaseItem>> Result{};
 	
@@ -75,38 +75,38 @@ TSet<TObjectPtr<ABaseItem>> UStudentPerceptor::GetPerceivedItemsByType(EItemType
 	return Result;
 }
 
-TArray<TObjectPtr<APurgeZone>> UStudentPerceptor::GetSortedPurgeZones() const
+TArray<TObjectPtr<APurgeZone>> UStudentPerceptorLinKyawKhine::GetSortedPurgeZones() const
 {
 	return GetSortedObjects<APurgeZone>(PurgeZones);
 }
 
-TArray<TObjectPtr<ABaseZombie>> UStudentPerceptor::GetSortedZombies()
+TArray<TObjectPtr<ABaseZombie>> UStudentPerceptorLinKyawKhine::GetSortedZombies() const
 {
 	return GetSortedObjects<ABaseZombie>(NearbyZombies);
 }
 
-void UStudentPerceptor::MarkHouseAsVisited(TObjectPtr<AHouse> House)
+void UStudentPerceptorLinKyawKhine::MarkHouseAsVisited(TObjectPtr<AHouse> House)
 {
 	VisitedHouses.Add(House);
 	NearbyHouses.Remove(House);
 }
 
-void UStudentPerceptor::ClearVisitedHouses()
+void UStudentPerceptorLinKyawKhine::ClearVisitedHouses()
 {
 	VisitedHouses.Empty();
 }
 
-void UStudentPerceptor::BeginPlay()
+void UStudentPerceptorLinKyawKhine::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	if (auto PerceptionComp = GetOwner()->GetComponentByClass<UAIPerceptionComponent>())
 	{
-		PerceptionComp->OnTargetPerceptionUpdated.AddDynamic(this, &UStudentPerceptor::OnPerceptionUpdated);
+		PerceptionComp->OnTargetPerceptionUpdated.AddDynamic(this, &UStudentPerceptorLinKyawKhine::OnPerceptionUpdated);
 	}
 }
 
-void UStudentPerceptor::SetPurgeZoneDetectionBlackboard()
+void UStudentPerceptorLinKyawKhine::SetPurgeZoneDetectionBlackboard()
 {
 	APawn const* OwningPawn { Cast<APawn>(GetOwner())};
 	AAIController* AIController  = Cast<AAIController>(OwningPawn->GetController());
@@ -114,7 +114,7 @@ void UStudentPerceptor::SetPurgeZoneDetectionBlackboard()
 	BBComp->SetValueAsBool(TEXT("PurgeZoneDetected"), true);
 }
 
-void UStudentPerceptor::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+void UStudentPerceptorLinKyawKhine::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	GEngine->AddOnScreenDebugMessage(5, 1.f, FColor::Green, 
 	FString::Printf(TEXT("Saw Something!")));

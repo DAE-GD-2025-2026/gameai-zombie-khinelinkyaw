@@ -1,6 +1,6 @@
 ﻿#include "BTTask_GetNearestPurgeZone.h"
 
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 #include <GameAI_Zombie/PurgeZones/PurgeZone.h>
 
@@ -21,7 +21,7 @@ EBTNodeResult::Type UBTTask_GetNearestPurgeZone::ExecuteTask(UBehaviorTreeCompon
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComp) return EBTNodeResult::Failed;
 	
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	auto PurgeZones { PerceptorComp->GetSortedPurgeZones() };
 	
 	if (!PurgeZones.IsEmpty())

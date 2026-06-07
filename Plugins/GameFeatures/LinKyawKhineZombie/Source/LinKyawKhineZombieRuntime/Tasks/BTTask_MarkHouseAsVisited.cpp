@@ -1,7 +1,7 @@
 ﻿#include "BTTask_MarkHouseAsVisited.h"
 
 #include <../PluginUtils/ZombiePluginUtils.h>
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 #include <AIController.h>
 #include <BehaviorTree/BlackboardComponent.h>
@@ -21,7 +21,7 @@ EBTNodeResult::Type UBTTask_MarkHouseAsVisited::ExecuteTask(UBehaviorTreeCompone
 	if (!BlackboardComp) return EBTNodeResult::Failed;
 	
 	AHouse* House = Cast<AHouse>(BlackboardComp->GetValueAsObject(BlackboardKey.SelectedKeyName));
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	
 	if (House)
 	{

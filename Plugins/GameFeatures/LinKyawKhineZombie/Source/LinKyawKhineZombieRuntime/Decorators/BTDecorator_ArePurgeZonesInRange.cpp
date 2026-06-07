@@ -1,6 +1,6 @@
 ﻿#include "BTDecorator_ArePurgeZonesInRange.h"
 
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 #include <GameAI_Zombie/PurgeZones/PurgeZone.h>
 
@@ -22,7 +22,7 @@ bool UBTDecorator_ArePurgeZonesInRange::CalculateRawConditionValue(UBehaviorTree
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComp) return false;
 	
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	auto PurgeZones { PerceptorComp->GetSortedPurgeZones() };
 	
 	FVector const SurvivorLocation { AIController->GetPawn()->GetActorLocation() };

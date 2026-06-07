@@ -2,7 +2,7 @@
 
 #include "AIController.h"
 
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 UBTService_ResetVisitedHouses::UBTService_ResetVisitedHouses()
 {
@@ -16,7 +16,7 @@ void UBTService_ResetVisitedHouses::TickNode(UBehaviorTreeComponent& OwnerComp, 
 	AAIController const* AIController = OwnerComp.GetAIOwner();
 	if (!AIController || !AIController->GetPawn()) return;
 
-	if (UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() })
+	if (UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() })
 	{
 		PerceptorComp->ClearVisitedHouses();
 	}

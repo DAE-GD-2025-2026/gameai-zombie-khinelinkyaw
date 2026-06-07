@@ -1,6 +1,6 @@
 ﻿#include "BTTask_FindNearestItemByType.h"
 
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 #include <GameAI_Zombie/Items/BaseItem.h>
 
@@ -23,7 +23,7 @@ EBTNodeResult::Type UBTTask_FindNearestItemByType::ExecuteTask(UBehaviorTreeComp
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	if (!BlackboardComp) return EBTNodeResult::Failed;
 	
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	auto Items { PerceptorComp->GetPerceivedItemsByType(ItemType) };
 	
 	if (Items.IsEmpty()) return EBTNodeResult::Failed;

@@ -5,7 +5,7 @@
 #include <GameAI_Zombie/Village/House/House.h>
 #include <GameAI_Zombie/Items/BaseItem.h>
 
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 #include <../PluginUtils/ZombiePluginUtils.h>
 
 #include "AIController.h"
@@ -28,7 +28,7 @@ bool UBTDecorator_AreItemsInHouse::CalculateRawConditionValue(UBehaviorTreeCompo
 	//AActor const* Survivor = Cast<AActor>(BlackboardComp->GetValueAsObject(SurvivorKey.SelectedKeyName));
 	if (House == nullptr) return false;
 	
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	
 	FVector HouseOrigin{}, HouseBoxExtend{};
 	House->GetActorBounds(false, HouseOrigin, HouseBoxExtend);

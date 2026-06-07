@@ -12,14 +12,14 @@
 #include <GameAI_Zombie/Items/ItemType.h>
 #include <GameAI_Zombie/PurgeZones/PurgeZone.h>
 
-#include "StudentPerceptor.generated.h"
+#include "StudentPerceptorLinKyawKhine.generated.h"
 
 class ABaseZombie;
 class AHouse;
 class ABaseItem;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class LINKYAWKHINEZOMBIERUNTIME_API UStudentPerceptor : public UActorComponent
+class LINKYAWKHINEZOMBIERUNTIME_API UStudentPerceptorLinKyawKhine : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -49,13 +49,13 @@ private:
 	
 public:
 	// Sets default values for this component's properties
-	UStudentPerceptor();
+	UStudentPerceptorLinKyawKhine();
 	
 	TSet<TObjectPtr<ABaseItem>> GetPerceivedItems();
 	TSet<TObjectPtr<ABaseItem>> GetPerceivedItemsByType(EItemType ItemType);
 	
 	TArray<TObjectPtr<APurgeZone>> GetSortedPurgeZones() const;
-	TArray<TObjectPtr<ABaseZombie>> GetSortedZombies();
+	TArray<TObjectPtr<ABaseZombie>> GetSortedZombies() const;
 	
 	void MarkHouseAsVisited(TObjectPtr<AHouse> House);
 	void ClearVisitedHouses();
@@ -68,7 +68,7 @@ public:
 };
 
 template <typename T>
-void UStudentPerceptor::RemoveNullPtrsFromSet(TSet<TObjectPtr<T>>& Actors)
+void UStudentPerceptorLinKyawKhine::RemoveNullPtrsFromSet(TSet<TObjectPtr<T>>& Actors)
 {
 	for (auto Iter { Actors.CreateIterator() }; Iter; ++Iter)
 	{
@@ -80,7 +80,7 @@ void UStudentPerceptor::RemoveNullPtrsFromSet(TSet<TObjectPtr<T>>& Actors)
 }
 
 template <typename T>
-TArray<TObjectPtr<T>> UStudentPerceptor::GetSortedObjects(TSet<TObjectPtr<T>> const& Actors) const
+TArray<TObjectPtr<T>> UStudentPerceptorLinKyawKhine::GetSortedObjects(TSet<TObjectPtr<T>> const& Actors) const
 {
 	TArray<TObjectPtr<T>> Result{};
 	
@@ -105,7 +105,7 @@ TArray<TObjectPtr<T>> UStudentPerceptor::GetSortedObjects(TSet<TObjectPtr<T>> co
 }
 
 template <typename T>
-TObjectPtr<T> UStudentPerceptor::GetClosestItem(TSet<TObjectPtr<T>> const& Actors) const
+TObjectPtr<T> UStudentPerceptorLinKyawKhine::GetClosestItem(TSet<TObjectPtr<T>> const& Actors) const
 {
 	FVector SurvivorLocation { GetOwner()->GetActorLocation() };
 	

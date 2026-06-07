@@ -1,7 +1,7 @@
 ﻿#include "BTTask_FindItemInHouse.h"
 
 #include <LinKyawKhineZombieRuntime/PluginUtils/ZombiePluginUtils.h>
-#include "LinKyawKhineZombieRuntime/StudentPerceptor.h"
+#include "LinKyawKhineZombieRuntime/StudentPerceptorLinKyawKhine.h"
 
 #include <GameAI_Zombie/Common/InventoryComponent.h>
 #include <GameAI_Zombie/Items/BaseItem.h>
@@ -29,7 +29,7 @@ EBTNodeResult::Type UBTTask_FindItemInHouse::ExecuteTask(UBehaviorTreeComponent&
 	
 	if (!House) return EBTNodeResult::Failed;
 	
-	UStudentPerceptor* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptor>() };
+	UStudentPerceptorLinKyawKhine* PerceptorComp { AIController->GetPawn()->GetComponentByClass<UStudentPerceptorLinKyawKhine>() };
 	
 	auto ItemsInHouse { PluginUtils::GetAllItemsInHouse(House, PerceptorComp->GetPerceivedItems()) };
 	
