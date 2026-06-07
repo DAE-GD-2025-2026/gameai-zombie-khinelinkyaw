@@ -22,8 +22,9 @@ bool UBTDecorator_IsActorInRange::CalculateRawConditionValue(UBehaviorTreeCompon
 	{
 		FVector const ActorLocation { ActorToAvoid->GetActorLocation() };
 		FVector const SurvivorPosition { AIController->GetPawn()->GetActorLocation() };
+		double Distance { FVector::Dist(ActorLocation, SurvivorPosition) };
 		
-		return (SurvivorPosition - ActorLocation).Size() < Range;
+		return Distance < Range;
 	}
 	
 	return false;
