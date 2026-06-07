@@ -9,7 +9,7 @@
 UBTService_AreZombiesInRange::UBTService_AreZombiesInRange()
 {
 	NodeName = "Are Zombies in Range";
-	BlackboardKey.AddBoolFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_AreZombiesInRange, BlackboardKey));
+	BlackboardKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTService_AreZombiesInRange, BlackboardKey), ABaseZombie::StaticClass());
 	Range = 500.f;
 }
 
@@ -32,7 +32,8 @@ void UBTService_AreZombiesInRange::TickNode(UBehaviorTreeComponent& OwnerComp, u
 		
 		if (Distance < Range)
 		{
-			BlackboardComp->SetValueAsBool(BlackboardKey.SelectedKeyName, true);
+			//BlackboardComp->SetValueAsBool(BlackboardKey.SelectedKeyName, true);
+			BlackboardComp->SetValueAsObject(BlackboardKey.SelectedKeyName, Zombies[0].Get());
 		}
 	}
 }
