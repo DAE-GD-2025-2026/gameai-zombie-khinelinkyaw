@@ -25,7 +25,7 @@ EBTNodeResult::Type UBTTask_AvoidActor::ExecuteTask(UBehaviorTreeComponent& Owne
 		FVector AvoidLocation {
 			SurvivorPosition.X + ActorLocation.X,
 			SurvivorPosition.Y + ActorLocation.Y,
-			SurvivorPosition.Z
+			1
 		};
 		
 		AvoidLocation = AvoidLocation.GetSafeNormal() * 5.f; 
